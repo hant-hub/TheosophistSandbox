@@ -32,7 +32,7 @@ Token GetToken(Tokenizer* t) {
     if (t->At >= &t->Base[t->size]) {
         w.type = TOKEN_EOB;
         w.pos = t->At;
-        w.length = 0;
+        w.length = 1;
     }
 
     //skip whitespace

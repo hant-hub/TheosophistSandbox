@@ -9,6 +9,8 @@
 
 #define ARR_SIZE(x) sizeof(x)/sizeof(x[0])
 
+extern char buffer[200];
+
 typedef float f32;
 typedef double f64;
 typedef long double f128;
@@ -59,5 +61,33 @@ typedef struct {
 //expressions which would be sick
 Token GetToken(Tokenizer* t);
 
+//prebuilt parsers + structs
+
+typedef struct {
+    int linecount;
+    int wordcount;
+    int incorrect;
+} WordLineCounterState;
+void CountWordsPerLine(WordLineCounterState* state, int* vals, int numvals, Token t);
+
+typedef struct {
+    int linecount;
+} LineCounterState;
+void CountLines(LineCounterState* state, Token t);
+
+typedef struct {
+    int needlepos; 
+} MatchSubState;
+void MatchSubstr(MatchSubState* state, char* needle, Token t);
+
+typedef struct {
+    int mismatch;
+} StrInSetState;
+void StrInSet(StrInSetState* state, char** set, int size, Token t);
+
+typedef struct {
+    int matched;//counts matches
+} MatchStringState;
+void MatchString(MatchStringState* state, char* string, Token t);
 
 #endif

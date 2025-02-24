@@ -18,6 +18,7 @@ static char buffer[100];
 typedef struct {
     void* lib;
     int* results;
+    char* buffer;
     int numresults;
     boolcheck e;
     varcheck o;
@@ -59,6 +60,7 @@ int main() {
             printw("%d ", s.results[i]);
         }
         mvprintw(2, 0, "Optional: %d", s.o(buffer, top));
+        if (s.buffer) mvprintw(3, 0, "%s", s.buffer);
         refresh();
         box(border, 0, 0);
         wrefresh(border);
@@ -72,24 +74,20 @@ int main() {
         switch (c) {
             case 27:
             {
-                mvprintw(3, 0, "Case27");
                 shouldclose = 1;
                 break;
             }
             case KEY_BACKSPACE:
             {
-                mvprintw(3, 0, "CaseBack");
                 if (top) buffer[--top] = 0;
                 break;
             }
             case ERR:
             {
-                mvprintw(3, 0, "CaseErr");
                 break;
             }
             default:
             {
-                mvprintw(3, 0, "CaseDefault");
                 buffer[top++] = c;
                 ch = c;
                 break;
@@ -123,6 +121,7 @@ void LoadLib(SharedLib* s) {
     char* vname = *(char**)dlsym(s->lib, "vname");
     s->numresults = *(int*)dlsym(s->lib, "numresults");
     s->results = (int*)dlsym(s->lib, "results");
+    s->buffer = dlsym(s->lib, "buffer");
 
     s->e = dlsym(s->lib, bname);
     s->o = dlsym(s->lib, vname);

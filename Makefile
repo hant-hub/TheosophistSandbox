@@ -7,6 +7,8 @@ TSTS := $(shell find $(TST_DIRS) -name '*.c')
 
 CFLAGS := -g
 
+.PHONEY: test
+
 build/app : $(SRCS)
 	$(CC) $(SRCS) $(CFLAGS) -lncurses -o build/app
 
